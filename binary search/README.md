@@ -6,7 +6,7 @@ This folder contains **Binary Search problems**, grouped by patterns and difficu
 
 ## 🟩 1. Basic Binary Search – Start Here
 
-- [binary_search.cpp](binary_search.cpp) – Basic BS Template
+- [binary search.cpp](binary search.cpp) – Basic BS Template
 - [35. Search Insert Position](35.Search_Insert_Position.cpp)
 - [69. Sqrt(x)](69.Sqrt(x).cpp)
 - [540. Single Element in a Sorted Array](540.Single_Element_in_a_Sorted_Array.cpp)
