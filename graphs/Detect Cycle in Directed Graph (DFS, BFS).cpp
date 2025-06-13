@@ -1,75 +1,40 @@
-BFS Solution (with Parent Tracking)
 class Solution {
   public:
-    bool bfs(int start, vector<int> adj[], vector<bool>& visited) {
-        queue<pair<int,int>> q; // {currentNode, parent}
-        q.push({start, -1});
-        visited[start] = true;
+    // Helper function for DFS
+    bool dfs(int node, vector<int> adj[], vector<bool>& visited, vector<bool>& recStack) {
+        visited[node] = true;
+        recStack[node] = true;   // Mark node as part of current recursion stack
 
-        while(!q.empty()) {
-            int node = q.front().first;
-            int par = q.front().second;
-            q.pop();
-
-            for(auto nbr : adj[node]) {
-                if(!visited[nbr]) {
-                    visited[nbr] = true;
-                    q.push({nbr, node});
-                } else if(nbr != par) {
-                    // Found a back edge, cycle exists
+        for(int neighbor : adj[node]) {
+            if(!visited[neighbor]) {
+                if(dfs(neighbor, adj, visited, recStack))
                     return true;
-                }
+            } else if(recStack[neighbor]) {
+                // Found a back edge (cycle in directed graph)
+                return true;
             }
         }
+
+        recStack[node] = false;  // Remove from recursion stack before going back
         return false;
     }
 
-    bool isCycle(int V, vector<vector<int>>& edges) {
-        // Build adjacency list
+    bool isCyclic(int V, vector<vector<int>> &edges) {
         vector<int> adj[V];
-        for(auto& e : edges) {
+        for(auto &e : edges) {
             int u = e[0], v = e[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+            adj[u].push_back(v); // Only one side, since directed
         }
-        vector<bool> visited(V, false);
 
-        for(int i=0; i<V; i++) {
+        vector<bool> visited(V, false);
+        vector<bool> recStack(V, false);
+
+        for(int i = 0; i < V; i++) {
             if(!visited[i]) {
-                if(bfs(i, adj, visited))
+                if(dfs(i, adj, visited, recStack))
                     return true;
             }
         }
         return false;
     }
 };
-
-DFS Solution (Alternative)
-
-bool dfs(int node, int par, vector<int> adj[], vector<bool>& visited) {
-    visited[node] = true;
-    for(auto nbr : adj[node]) {
-        if(!visited[nbr]) {
-            if(dfs(nbr, node, adj, visited)) return true;
-        } else if(nbr != par) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool isCycle(int V, vector<vector<int>>& edges) {
-    vector<int> adj[V];
-    for(auto& e : edges) {
-        int u = e[0], v = e[1];
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-    vector<bool> visited(V, false);
-    for(int i=0; i<V; i++) {
-        if(!visited[i]) {
-            if(dfs(i, -1, adj, visited)) return true;
-        }
-    }
-    return false;
-}
