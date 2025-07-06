@@ -45,11 +45,13 @@ public:
         int n=arr.size();
         int high=accumulate(arr.begin(),arr.end(),0);
         int low=*max_element(arr.begin(),arr.end());
+        int ans=-1;
         while(low<=high)
         {
             int mid=(low+high)/2;
             if(possible(arr,mid,days))
             {
+                ans=mid;
                 high=mid-1;
             }
             else
@@ -57,6 +59,6 @@ public:
                 low=mid+1;
             }
         }
-        return low;
+        return ans;
     }
 };
