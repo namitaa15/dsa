@@ -20,7 +20,7 @@ int minSubsetSumDifference(vector<int>& arr, int n) {
 
     // Initialize the first row based on the first element of the array
     if (arr[0] <= totSum)
-        dp[0][totSum] = true;
+        dp[0][arr[0] = true;
 
     // Fill in the DP table using a bottom-up approach
     for (int ind = 1; ind < n; ind++) {
