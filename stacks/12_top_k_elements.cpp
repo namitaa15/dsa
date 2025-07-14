@@ -19,24 +19,27 @@ Approach:
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        map<int, int> mp;
-
-        for (int num : nums) {
-            mp[num]++;
-        }
-
-        vector<pair<int, int>> vec(mp.begin(), mp.end());
-
-        // Sort by frequency (descending)
-        sort(vec.begin(), vec.end(), [](pair<int, int>& a, pair<int, int>& b) {
-            return a.second > b.second;
-        });
-
-        vector<int> ans;
-        for (int i = 0; i < k; i++) {
-            ans.push_back(vec[i].first);
-        }
-
-        return ans;
+    unordered_map<int, int> freq;
+    int n = nums.size();
+    for(int n : nums) {
+        freq[n]++;
     }
+
+    // Step 2: Bucket banao (index = frequency)
+    vector<vector<int>> bucket(n + 1);
+    for(auto& p : freq) {
+        bucket[p.second].push_back(p.first); // freq par kaunse numbers aaye
+    }
+
+    // Step 3: Answer collect karo, frequency zyada se kam
+    vector<int> ans;
+    for(int i = n; i >= 1 && ans.size() < k; i--) {
+        for(int num : bucket[i]) {
+            ans.push_back(num);
+            if(ans.size() == k) break;
+        }
+    }
+    return ans;
+}
+
 };
